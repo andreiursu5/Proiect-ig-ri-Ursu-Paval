@@ -1,0 +1,115 @@
+#include <iostream>
+using namespace std;
+
+
+
+class client
+{
+private:
+    float ora_urcare, minut_urcare, ora_coborare, minut_coborare, taxa = 1;
+
+public:
+    client()///constructorul
+    {
+        ora_urcare = 0;
+        minut_urcare = 0;
+        ora_coborare = 0;
+        minut_coborare = 0;
+    }
+
+    void inregistrare_ora_urcare(int _ora_urcare, int _minut_urcare)///functie membra
+    {
+        ora_urcare = _ora_urcare;
+        minut_urcare = _minut_urcare;
+    }
+
+    void inregistrare_ora_coborare(int _ora_coborare, int _minut_coborare)
+    {
+        ora_coborare = _ora_coborare;
+        minut_coborare = _minut_coborare;
+    }
+
+    float calculare_suma_de_achitat();///protitipul functiei
+
+};
+
+
+
+float client::calculare_suma_de_achitat()
+{
+    float suma_de_achitat = 0;
+
+
+    if (ora_urcare == ora_coborare)
+        suma_de_achitat = (minut_coborare - minut_urcare) * taxa;/// taxa se pune la fiecare minut
+
+    if (ora_coborare > ora_urcare)
+        suma_de_achitat = (60 - minut_urcare) * taxa + minut_coborare * taxa + ((ora_coborare - ora_urcare) * 60 * taxa - 60 * taxa);///daca ora coborare este mai mare decat ora urcare atunci facem calculul pentru minute,dar daca a stat o ora sau mai multe ore si cateva minute atunci aceasta ecuatia calculeaza si orele in plus care au fost state
+
+    if (ora_coborare < ora_urcare && ora_coborare == 0)/// inseamna ca acel client s a urcat in taxi in jurul orei 12 noaptea si atunci ora coborare va fi mai mica decat ora urcare dar in cazul acestui if vom considera ca ora coborare este 00:(si orice minut)
+        suma_de_achitat = (60 - minut_urcare) * taxa + minut_coborare * taxa;
+    if (ora_coborare < ora_urcare && ora_coborare>0)///clinetul a urcat in jurul orei 12 noaptea(00:00) si a stat mai mult de o ora
+        suma_de_achitat = (60 - minut_urcare) * taxa + minut_coborare * taxa + ora_coborare * 60 * taxa - 60 * taxa;
+
+    return suma_de_achitat;
+
+}
+
+
+
+
+/// program pentru client taxi
+int main()
+{
+    client Client1, Client2, Client3;///constructorul se apeleaza automat deci nu mai trebuie puse si parantezele()
+    ///Client1,Client2,Client3 de mai sus sunt obiectele
+    int i = 1;
+    float ora_urcare, ora_coborare, minut_urcare, minut_coborare;
+    while (i <= 3)
+    {///introducem datele problemei
+        cout << "Ora urcare client nr. " << i << ": "; cin >> ora_urcare;
+        cout << "Minut urcare client nr. " << i << ": "; cin >> minut_urcare;
+        cout << "Ora coborare client nr. " << i << ": "; cin >> ora_coborare;
+        cout << "Minut coborare client nr. " << i << ": "; cin >> minut_coborare;
+
+        if (i == 1)
+        {///introducem datele in obiectul proriu zis
+            Client1.inregistrare_ora_urcare(ora_urcare, minut_urcare);
+            Client1.inregistrare_ora_coborare(ora_coborare, minut_coborare);
+            cout << "Clientul numarul 1 are de achitat " << Client1.calculare_suma_de_achitat() << "BTC.";
+            cout << endl << endl << endl;
+        }
+
+        if (i == 2)
+        {
+            Client2.inregistrare_ora_urcare(ora_urcare, minut_urcare);
+            Client2.inregistrare_ora_coborare(ora_coborare, minut_coborare);
+            cout << "Clientul numarul 2 are de achitat " << Client2.calculare_suma_de_achitat() << "BTC.";
+            cout << endl << endl << endl;
+        }
+
+        if (i == 3)
+        {///introducem datele in obiectul proriu zis
+            Client3.inregistrare_ora_urcare(ora_urcare, minut_urcare);
+            Client3.inregistrare_ora_coborare(ora_coborare, minut_coborare);
+            cout << "Clientul numarul 3 are de achitat " << Client3.calculare_suma_de_achitat() << "BTC.";
+            cout << endl << endl << endl;
+        }
+
+
+
+
+        i++;///schimbare numar client si indeplinire conditie pentru iesit din while
+
+
+    }
+
+
+    system("cls");
+
+    cout << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl;
+    cout << "                                     Multumim ca ati calatorit cu DenisUrsuBet!";
+    cout << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl;
+
+    return 0;
+}
